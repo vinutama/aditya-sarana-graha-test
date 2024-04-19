@@ -16,7 +16,7 @@ from utils.http import success
 TTL = 60 * 60 * 2  # 2 hours expired
 
 
-@auth_bp.route("/login", methods=["POST"])
+@auth_bp.route("/api/login", methods=["POST"])
 def login():
     req_body = request.get_json()
     req_keys = ("username", "password")
