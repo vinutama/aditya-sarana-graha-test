@@ -1,0 +1,35 @@
+version: "3"
+services:
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DEPLOYMENT_TYPE=dev
+      - POSTGRES_USER=box
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=pg-db
+      - POSTGRES_HOST=pg-db
+      - JWT_SECRET=secrettt
+    links:
+      - pg-db
+    depends_on:
+      - pg-db
+    ports:
+      - "3000:3000"
+
+  pg-db:
+    container_name: pg-db
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=box
+      - POSTGRES_DB=pg-db
+      - POSTGRES_HOST=pg-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}
