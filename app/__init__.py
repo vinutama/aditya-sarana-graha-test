@@ -9,11 +9,12 @@ from app.db import db
 from config import DevelopmentConfig, ProductionConfig
 from services.auth import auth_bp
 from services.employees import employees_bp
+from services.salaries import salary_bp
 from services.users import user_bp
 from utils import logger
 from utils.http import fail
 
-_blueprints = (auth_bp, employees_bp, user_bp)
+_blueprints = (auth_bp, employees_bp, salary_bp, user_bp)
 
 KNOWN_EXCEPTIONS = [e for _, e in inspect.getmembers(exc, inspect.isclass)]
 

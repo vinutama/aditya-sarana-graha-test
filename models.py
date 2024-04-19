@@ -60,3 +60,14 @@ class Salaries(Base):
     salary = db.Column(Integer, nullable=False)
     from_date = db.Column(Date, nullable=False)
     to_date = db.Column(Date, nullable=False)
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "salary": self.salary,
+            "employee_id": self.emp_id,
+            "from_date": self.from_date,
+            "to_date": self.to_date,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+        }

@@ -3,12 +3,12 @@
 from flask import request
 
 from app.db import db
-from models import Employees
+from models import Employees, Salaries
 from services import check_keys
 from services.employees import employees_bp
 from utils import logger
 from utils.auth import authenticate
-from utils.db import fetch_data
+from utils.db import fetch_data, fetch_first
 from utils.exceptions import DatabaseError, NotFoundError
 from utils.http import success
 
@@ -39,9 +39,29 @@ def add_employee():
 @authenticate()
 def get_employees():
     employees = fetch_data(db.session.query(Employees).all())
-    logger.info(f"GET Employees: {employees}")
-
     return success(employees, "Employee retieved")
+
+
+@employees_bp.route("/api/employees/get/<employee_id>", methods=["GET"])
+@authenticate()
+def get_employee_detail(employee_id: str):
+    query = (
+        db.session.query(
+            Employees.firstname,
+            Employees.lastname,
+            Employees.birthdate,
+            Salaries.salary,
+            Salaries.from_date,
+            Salaries.to_date,
+        )
+        .join(Salaries, Employees.id == Salaries.emp_id)
+        .filter(Salaries.emp_id == employee_id)
+        .first()
+    )
+    employee = fetch_first(query)
+    logger.info(f"GET Employees: {employee}")
+
+    return success(employee, "Employee retieved")
 
 
 @employees_bp.route("/api/employees/update/<employee_id>", methods=["PUT"])
