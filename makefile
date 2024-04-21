@@ -8,3 +8,6 @@ check-db:
 
 logs-be:
 	docker logs backend -f
+
+prune:
+	docker system prune -af --volumes

@@ -34,6 +34,7 @@ def create_app(config_class: str = None):
     app.config.from_object(config_class)
 
     with app.app_context():
+        # database connection to postgres container
         db.init_app(app)
         initiate_tables(db)
 
